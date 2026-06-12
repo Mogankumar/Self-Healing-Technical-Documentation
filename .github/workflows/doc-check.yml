@@ -1,0 +1,41 @@
+name: Self-Healing Docs
+
+on:
+  pull_request:
+    paths:
+      - '**.py'    # only runs when Python files change
+
+jobs:
+  doc-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # needed to create branches
+      pull-requests: write  # needed to create PRs and comments
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0    # full history needed for git diff
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build docs index
+        run: python -m doc_checker.indexer .
+
+      - name: Run doc check
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.sha }}
+          REPO_ROOT: .
+          INDEX_PATH: docs-index.json
+        run: python -m doc_checker.main

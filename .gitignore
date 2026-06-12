@@ -1,0 +1,15 @@
+# Environment variables — never commit these
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Index file (gets regenerated on each run)
+docs-index.json
+
+# OS
+.DS_Store
