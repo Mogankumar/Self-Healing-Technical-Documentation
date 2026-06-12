@@ -1,0 +1,9 @@
+chromadb
+sentence-transformers
+scikit-learn
+numpy
+groq
+PyGithub
+python-dotenv
+google-genai
+gitpython
