@@ -40,11 +40,11 @@ class GitHubIntegration:
     """
 
     def __init__(self):
-        token = os.getenv("GITHUB_TOKEN")
+        token = os.getenv("GH_TOKEN")
         repo_name = os.getenv("GITHUB_REPOSITORY")  # e.g. "owner/repo"
 
         if not token:
-            raise ValueError("GITHUB_TOKEN not set")
+            raise ValueError("GH_TOKEN not set")
         if not repo_name:
             raise ValueError("GITHUB_REPOSITORY not set")
 
