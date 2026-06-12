@@ -12,4 +12,5 @@ venv/
 docs-index.json
 
 # OS
-.DS_Store
+.DS_Storevenv/
+dummy_project/
