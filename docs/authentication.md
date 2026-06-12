@@ -29,7 +29,7 @@ Pass the user's integer ID and you'll get back a token string.
 token = generate_token(user_id=42)
 ```
 
-Tokens are valid for **1 hour** (3600 seconds) by default.
+Tokens are valid for **2 hours** (7200 seconds) by default.
 The token format is `user_id:expiry:signature`, where the signature
 is an HMAC-SHA256 of the payload.
 
