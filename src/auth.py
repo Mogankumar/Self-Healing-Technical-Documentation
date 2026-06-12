@@ -7,7 +7,7 @@ from typing import Optional
 
 
 SECRET_KEY = "supersecret123"
-TOKEN_EXPIRY_SECONDS = 1800  # 1 hour
+TOKEN_EXPIRY_SECONDS = 7200  # 1 hour
 
 
 def hash_password(password: str) -> str:
