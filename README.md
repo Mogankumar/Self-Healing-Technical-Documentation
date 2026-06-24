@@ -25,8 +25,6 @@ This project automates the detection and repair of that gap.
 5. If stale: it rewrites only the inaccurate parts, validates the fix, and opens a PR
 6. If uncertain: it posts a review comment flagging the section for human review
 
-![Pipeline](.github/assets/pipeline.png)
-
 ---
 
 ## Example
