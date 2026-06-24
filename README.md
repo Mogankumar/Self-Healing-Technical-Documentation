@@ -40,7 +40,7 @@ TOKEN_EXPIRY_SECONDS = 7200  # 2 hours
 
 **Auto-generated fix PR (PR #2), opened by the Action:**
 
-> **docs: fix stale section — Authentication > Token Generation**
+> **docs: fix stale section - Authentication > Token Generation**
 >
 > `TOKEN_EXPIRY_SECONDS` in `src/auth.py` was modified in PR #1.
 >
@@ -54,27 +54,27 @@ TOKEN_EXPIRY_SECONDS = 7200  # 2 hours
 
 The system runs in five phases:
 
-### Phase 1 — Code-to-Docs Index
+### Phase 1 - Code-to-Docs Index
 Parses every Python file into semantic chunks (functions, classes) using the AST. Parses every Markdown file into sections by heading. Links them two ways:
-- **Lexical pass** — if a doc section mentions a function name, link them
-- **Semantic pass** — compute embeddings for both, link pairs with cosine similarity > 0.75
+- **Lexical pass** - if a doc section mentions a function name, link them
+- **Semantic pass** - compute embeddings for both, link pairs with cosine similarity > 0.75
 
 Persists the graph as `docs-index.json` in your repo.
 
-### Phase 2 — Change Detection
-On every PR, parses the git diff to identify which functions, classes, and constants changed. Filters out noise (comment-only changes, test files, whitespace). Queries the index to find which doc sections are linked to changed code — these are the *suspects*.
+### Phase 2 - Change Detection
+On every PR, parses the git diff to identify which functions, classes, and constants changed. Filters out noise (comment-only changes, test files, whitespace). Queries the index to find which doc sections are linked to changed code - these are the *suspects*.
 
-### Phase 3 — LLM Verification
+### Phase 3 - LLM Verification
 For each suspect section, sends the LLM the old code, the new code, and the doc section content. Asks: *"Is this documentation still accurate?"* Returns a structured verdict (`accurate` / `stale` / `uncertain`) with a specific diagnosis. This filters out false positives.
 
-### Phase 4 — Repair Engine
+### Phase 4 - Repair Engine
 For confirmed stale sections, runs two LLM passes:
 - **Pass 1 (Repair):** Rewrites only the inaccurate parts, preserving style and structure
 - **Pass 2 (Validation):** A second LLM call validates the correction before trusting it
 
 Assigns a confidence level. High confidence → auto-fix PR. Low confidence → human review comment.
 
-### Phase 5 — GitHub Integration
+### Phase 5 - GitHub Integration
 - **High confidence:** Creates a branch, commits the corrected doc, opens a PR with full traceability
 - **Low confidence:** Posts a comment on the original PR with the diagnosis and a link to the affected section
 - **Every run:** Posts a summary comment listing all sections checked, fixed, and flagged
@@ -91,7 +91,7 @@ Assigns a confidence level. High confidence → auto-fix PR. Low confidence → 
 | Embeddings | `sentence-transformers` | Free, local, no API calls |
 | Vector similarity | `scikit-learn` cosine similarity | Simple, no server needed |
 | Index storage | JSON file in repo | Version-controlled, zero infrastructure |
-| LLM | Groq — Llama 3.3 70B | Free tier, fast, strong reasoning |
+| LLM | Groq - Llama 3.3 70B | Free tier, fast, strong reasoning |
 | GitHub API | `PyGithub` | PR creation and comment posting |
 | CI/CD | GitHub Actions | Native integration |
 
@@ -150,7 +150,7 @@ Go to **Settings → Secrets and variables → Actions** and add:
 
 | Secret | Where to get it |
 |---|---|
-| `GROQ_API_KEY` | [console.groq.com](https://console.groq.com) — free |
+| `GROQ_API_KEY` | [console.groq.com](https://console.groq.com) - free |
 | `GH_TOKEN` | GitHub → Settings → Developer settings → Personal access tokens (needs `repo` scope) |
 
 ### 3. That's it
@@ -211,7 +211,7 @@ self-heal-technical-doc/
 | `REPO_ROOT` | `.` | Root directory to scan |
 | `INDEX_PATH` | `docs-index.json` | Path to the index file |
 | `BASE_BRANCH` | `HEAD~1` | Git ref to diff against |
-| `PR_NUMBER` | — | PR number (set automatically in CI) |
+| `PR_NUMBER` | - | PR number (set automatically in CI) |
 
 ---
 
@@ -225,8 +225,8 @@ Tested against a suite of deliberate breaking changes:
 | New function parameter | ✅ | ✅ | ✅ |
 | Changed default value | ✅ | ✅ | ✅ |
 | Renamed role/enum value | ✅ | ✅ | ✅ |
-| Comment-only change | ➖ skipped | — | — |
-| Test file change | ➖ skipped | — | — |
+| Comment-only change | ➖ skipped | - | - |
+| Test file change | ➖ skipped | - | - |
 
 ---
 
@@ -242,7 +242,7 @@ Separating verification (judgment) from repair (generation) produces dramaticall
 The free tier on Groq (14,400 requests/day) is sufficient for this use case. The pipeline makes 2-3 LLM calls per suspect section, so a typical PR uses under 20 calls. Swapping in GPT-4 or Claude requires changing one line.
 
 **Why local embeddings instead of an embeddings API?**
-`sentence-transformers` runs entirely locally — no API calls, no cost, no rate limits. The `all-MiniLM-L6-v2` model is fast and produces high-quality embeddings for this use case.
+`sentence-transformers` runs entirely locally - no API calls, no cost, no rate limits. The `all-MiniLM-L6-v2` model is fast and produces high-quality embeddings for this use case.
 
 ---
 
